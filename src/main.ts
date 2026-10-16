@@ -27,4 +27,4 @@ const routes: Routes = [
   }
 ];
 
-void bootstrapApplication(AppRootPageComponent, {providers: provideRouter(routes)});
+void bootstrapApplication(AppRootPageComponent, {providers: [provideRouter(routes)]});

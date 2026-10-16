@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {RouterLinkWithHref, RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root-page',
   standalone: true,
   imports: [
-    RouterLinkWithHref,
+    RouterLink,
     RouterOutlet
   ],
   template: `
