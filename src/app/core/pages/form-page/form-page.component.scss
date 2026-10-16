@@ -1,0 +1,33 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  button {
+    width: 150px;
+  }
+}
+
+.form-line {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.form-results {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+
+  .form-result {
+    flex: 1;
+  }
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+.ng-touched .ng-invalid {
+  border: 1px solid #ff5353;
+}
