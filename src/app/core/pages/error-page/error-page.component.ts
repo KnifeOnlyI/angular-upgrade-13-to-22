@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {DummyComponent} from "@shared/components/dummy/dummy.component";
 
 @Component({
+  selector: 'app-error-page',
   standalone: true,
   imports: [
     DummyComponent

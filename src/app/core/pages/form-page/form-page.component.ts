@@ -14,6 +14,7 @@ import {JsonPipe, NgForOf} from "@angular/common";
 import {DummyComponent} from "@shared/components/dummy/dummy.component";
 
 @Component({
+  selector: 'app-form-page',
   // Si on met "DEFAULT" les logs dans les méthodes (utilisés dans le template) s'exécuteront 2 fois trop.
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-page.component.scss'],
