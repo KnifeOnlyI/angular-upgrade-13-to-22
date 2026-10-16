@@ -9,7 +9,7 @@ import {CounterComponent} from "@shared/components/counter/counter.component";
   ],
   template: `
     <h1>Counter</h1>
-    <app-counter></app-counter>
+    <app-counter [autoIncrementValue]="10"></app-counter>
   `
 })
 export class CounterPageComponent {

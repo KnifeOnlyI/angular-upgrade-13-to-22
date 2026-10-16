@@ -6,7 +6,7 @@ import {CounterComponent} from "@shared/components/counter/counter.component";
   standalone: true,
   template: `
     <h1>Index</h1>
-    <app-counter></app-counter>
+    <app-counter [autoIncrementValue]="25"></app-counter>
   `,
   imports: [
     CounterComponent
