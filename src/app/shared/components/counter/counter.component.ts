@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from '@angular/core';
 
 @Component({
   selector: 'app-counter',
@@ -13,9 +13,11 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/co
 })
 export class CounterComponent {
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   protected counter = 0;
 
-  constructor(private readonly cdr: ChangeDetectorRef) {
+  constructor() {
     console.log('Counter component created');
 
     setInterval(() => {

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -71,10 +71,9 @@ import {DummyComponent} from "@shared/components/dummy/dummy.component";
   ]
 })
 export class FormPageComponent implements OnDestroy {
-  protected readonly form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
+  private readonly formLineService = inject(FormLineService);
 
-  constructor(private readonly formLineService: FormLineService) {
-  }
+  protected readonly form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
 
   ngOnDestroy() {
     this.form.controls.forEach(line => line.destroy());
