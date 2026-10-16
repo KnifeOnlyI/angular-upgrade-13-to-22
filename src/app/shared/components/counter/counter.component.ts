@@ -13,7 +13,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/co
 })
 export class CounterComponent {
 
-  counter = 0;
+  protected counter = 0;
 
   constructor(private readonly cdr: ChangeDetectorRef) {
     console.log('Counter component created');

@@ -71,12 +71,16 @@ import {DummyComponent} from "@shared/components/dummy/dummy.component";
   ]
 })
 export class FormPageComponent implements OnDestroy {
-  form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
+  protected readonly form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
 
   constructor(private readonly formLineService: FormLineService) {
   }
 
-  onSubmit() {
+  ngOnDestroy() {
+    this.form.controls.forEach(line => line.destroy());
+  }
+
+  protected onSubmit() {
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
@@ -90,15 +94,11 @@ export class FormPageComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.form.controls.forEach(line => line.destroy());
-  }
-
-  onAddLine() {
+  protected onAddLine() {
     this.form.push(new LineForm());
   }
 
-  onDeleteLine(lineFormIndex: number) {
+  protected onDeleteLine(lineFormIndex: number) {
     // Ici on veut appeler la méthode destroy de la classe LineForm. L'absence de typage nous oblige à utiliser une
     // méthode intermédiaire pour obtenir le type.
     this.form.at(lineFormIndex).destroy();
