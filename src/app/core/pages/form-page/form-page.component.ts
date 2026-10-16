@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
-import {AbstractControl, UntypedFormArray, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormArray, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {LineForm} from "@shared/forms/line.form";
 import {FormLineService} from "@shared/services/form-line.service";
 import {firstValueFrom} from "rxjs";
@@ -18,23 +18,22 @@ import {firstValueFrom} from "rxjs";
     <form (ngSubmit)="onSubmit()">
       <button (click)="onAddLine()" type="button">Ajouter une ligne</button>
 
-      <ng-container *ngFor="let formGroup of form.controls; let index = index">
-        <!-- L'absence de typage nous oblige à ce ngIf ou autre pour gérer le typage -->
-        <div *ngIf="toLineForm(formGroup) as lineForm" class="form-line">
+      <ng-container *ngFor="let lineForm of form.controls; let index = index">
+        <div class="form-line">
           <!--
           L'absence de typage nous oblige à créer un getter (méthode) et à l'utiliser dans le template si on veut
           gérer un minimum les erreurs de types.
           -->
-          <input type="number" placeholder="Number 1" [formControl]="lineForm.getFirstNumberControl()">
-          <input type="number" placeholder="Number 2" [formControl]="lineForm.getSecondNumberControl()">
-          <input type="number" placeholder="Number 3" [formControl]="lineForm.getThirdNumberControl()">
+          <input type="number" placeholder="Number 1" [formControl]="lineForm.controls.firstNumber">
+          <input type="number" placeholder="Number 2" [formControl]="lineForm.controls.secondNumber">
+          <input type="number" placeholder="Number 3" [formControl]="lineForm.controls.thirdNumber">
 
           <button (click)="onDeleteLine(index)" type="button">Supprimer</button>
 
           <!-- Pareil ici -->
-          <code>{{ lineForm.getFirstNumberControl().errors | json }}</code>
-          <code>{{ lineForm.getSecondNumberControl().errors | json }}</code>
-          <code>{{ lineForm.getThirdNumberControl().errors | json }}</code>
+          <code>{{ lineForm.controls.firstNumber.errors | json }}</code>
+          <code>{{ lineForm.controls.secondNumber.errors | json }}</code>
+          <code>{{ lineForm.controls.thirdNumber.errors | json }}</code>
         </div>
       </ng-container>
 
@@ -55,7 +54,7 @@ import {firstValueFrom} from "rxjs";
   `,
 })
 export class FormPageComponent implements OnDestroy {
-  form = new UntypedFormArray([], {validators: [minFormArrayLength(1)]});
+  form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
 
   constructor(private readonly formLineService: FormLineService) {
   }
@@ -66,7 +65,7 @@ export class FormPageComponent implements OnDestroy {
     if (this.form.valid) {
       console.log('Formulaire valide, appel du service de sauvegarde');
 
-      const linesToSave = this.form.controls.map(control => this.toLineForm(control));
+      const linesToSave = this.form.controls;
 
       void firstValueFrom(this.formLineService.saveLines(linesToSave));
     } else {
@@ -75,7 +74,7 @@ export class FormPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.form.controls.forEach(abstractControl => this.toLineForm(abstractControl).destroy());
+    this.form.controls.forEach(line => line.destroy());
   }
 
   onAddLine() {
@@ -85,19 +84,15 @@ export class FormPageComponent implements OnDestroy {
   onDeleteLine(lineFormIndex: number) {
     // Ici on veut appeler la méthode destroy de la classe LineForm. L'absence de typage nous oblige à utiliser une
     // méthode intermédiaire pour obtenir le type.
-    this.toLineForm(this.form.at(lineFormIndex)).destroy();
+    this.form.at(lineFormIndex).destroy();
 
     this.form.removeAt(lineFormIndex);
-  }
-
-  toLineForm(abstractControl: AbstractControl): LineForm {
-    console.log(`Cast de l'AbstractControl en LineForm`);
-    return abstractControl as LineForm;
   }
 }
 
 function minFormArrayLength(minValue: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    return (control as UntypedFormArray).controls.length < minValue ? {minFormArrayLength: true} : null;
+    // Ce cast reste obligatoire même avec les formulaires typés
+    return (control as FormArray).controls.length < minValue ? {minFormArrayLength: true} : null;
   };
 }
