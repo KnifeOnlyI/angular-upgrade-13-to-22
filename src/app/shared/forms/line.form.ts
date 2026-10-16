@@ -1,13 +1,13 @@
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {combineLatest, Subscription} from "rxjs";
 
-export class LineForm extends FormGroup {
+export class LineForm extends UntypedFormGroup {
   private readonly subscriptions = new Subscription();
 
   constructor() {
-    const firstNumber = new FormControl(null, {validators: [Validators.required]});
-    const secondNumber = new FormControl(null, {validators: [Validators.required]});
-    const thirdNumber = new FormControl(null, {validators: [Validators.required]});
+    const firstNumber = new UntypedFormControl(null, {validators: [Validators.required]});
+    const secondNumber = new UntypedFormControl(null, {validators: [Validators.required]});
+    const thirdNumber = new UntypedFormControl(null, {validators: [Validators.required]});
 
     thirdNumber.disable();
 
@@ -24,22 +24,22 @@ export class LineForm extends FormGroup {
     );
   }
 
-  getFirstNumberControl(): FormControl {
+  getFirstNumberControl(): UntypedFormControl {
     console.log(`Cast de l'abstractControl firstNumber en FormControl`);
 
-    return this.get('firstNumber') as FormControl;
+    return this.get('firstNumber') as UntypedFormControl;
   }
 
-  getSecondNumberControl(): FormControl {
+  getSecondNumberControl(): UntypedFormControl {
     console.log(`Cast de l'abstractControl secondNumber en FormControl`);
 
-    return this.get('secondNumber') as FormControl;
+    return this.get('secondNumber') as UntypedFormControl;
   }
 
-  getThirdNumberControl(): FormControl {
+  getThirdNumberControl(): UntypedFormControl {
     console.log(`Cast de l'abstractControl thirdNumber en FormControl`);
 
-    return this.get('thirdNumber') as FormControl;
+    return this.get('thirdNumber') as UntypedFormControl;
   }
 
   destroy(): void {

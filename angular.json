@@ -106,6 +106,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular-13-tests"
+  }
 }

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
-import {AbstractControl, FormArray, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, UntypedFormArray, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {LineForm} from "@shared/forms/line.form";
 import {FormLineService} from "@shared/services/form-line.service";
 import {firstValueFrom} from "rxjs";
@@ -55,7 +55,7 @@ import {firstValueFrom} from "rxjs";
   `,
 })
 export class FormPageComponent implements OnDestroy {
-  form = new FormArray([], {validators: [minFormArrayLength(1)]});
+  form = new UntypedFormArray([], {validators: [minFormArrayLength(1)]});
 
   constructor(private readonly formLineService: FormLineService) {
   }
@@ -98,6 +98,6 @@ export class FormPageComponent implements OnDestroy {
 
 function minFormArrayLength(minValue: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    return (control as FormArray).controls.length < minValue ? {minFormArrayLength: true} : null;
+    return (control as UntypedFormArray).controls.length < minValue ? {minFormArrayLength: true} : null;
   };
 }
