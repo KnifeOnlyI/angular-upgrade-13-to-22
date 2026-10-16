@@ -1,13 +1,23 @@
 import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
-import {AbstractControl, FormArray, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {
+  AbstractControl,
+  FormArray,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn
+} from "@angular/forms";
 import {LineForm} from "@shared/forms/line.form";
 import {FormLineService} from "@shared/services/form-line.service";
 import {firstValueFrom} from "rxjs";
+import {JsonPipe, NgForOf} from "@angular/common";
+import {DummyComponent} from "@shared/components/dummy/dummy.component";
 
 @Component({
   // Si on met "DEFAULT" les logs dans les méthodes (utilisés dans le template) s'exécuteront 2 fois trop.
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-page.component.scss'],
+  standalone: true,
   template: `
     <h1>Form</h1>
 
@@ -52,6 +62,13 @@ import {firstValueFrom} from "rxjs";
       </div>
     </div>
   `,
+  imports: [
+    ReactiveFormsModule,
+    JsonPipe,
+    FormsModule,
+    DummyComponent,
+    NgForOf
+  ]
 })
 export class FormPageComponent implements OnDestroy {
   form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});

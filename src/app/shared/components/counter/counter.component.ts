@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/co
 
 @Component({
   selector: 'app-counter',
+  standalone: true,
   template: `
     <p>Compteur : {{ counter }}</p>
 
