@@ -2,13 +2,12 @@ import {ChangeDetectionStrategy, Component, OnDestroy, signal} from '@angular/co
 import {DummyComponent} from "@shared/components/dummy/dummy.component";
 
 @Component({
-  selector: 'app-error-page',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DummyComponent
-  ],
-  template: `
+    selector: 'app-error-page',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        DummyComponent
+    ],
+    template: `
     <h1>Page not found</h1>
 
     <app-dummy>

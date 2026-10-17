@@ -2,13 +2,12 @@ import {Component} from '@angular/core';
 import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
-  selector: 'app-root-page',
-  standalone: true,
-  imports: [
-    RouterLink,
-    RouterOutlet
-  ],
-  template: `
+    selector: 'app-root-page',
+    imports: [
+        RouterLink,
+        RouterOutlet
+    ],
+    template: `
     <h1>Pages :</h1>
     <ul>
       <li><a [routerLink]="['']">Index</a></li>

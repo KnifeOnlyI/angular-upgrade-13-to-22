@@ -11,14 +11,12 @@ import {LineForm} from "@shared/forms/line.form";
 import {FormLineService} from "@shared/services/form-line.service";
 import {firstValueFrom, map, startWith} from "rxjs";
 import {JsonPipe} from "@angular/common";
-import {DummyComponent} from "@shared/components/dummy/dummy.component";
 import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-form-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './form-page.component.scss',
-  standalone: true,
   template: `
     <h1>Form</h1>
 
@@ -56,18 +54,17 @@ import {toSignal} from "@angular/core/rxjs-interop";
           <pre><code>{{ form.getRawValue() | json }}</code></pre>
         </div>
       } @else {
-        <div class="form-result">
-          <p>Form errors</p>
-          <pre><code>{{ form.errors | json }}</code></pre>
-        </div>
-      }
+      <div class="form-result">
+        <p>Form errors</p>
+        <pre><code>{{ form.errors | json }}</code></pre>
+      </div>
+    }
     </div>
   `,
   imports: [
     ReactiveFormsModule,
     JsonPipe,
-    FormsModule,
-    DummyComponent
+    FormsModule
   ]
 })
 export class FormPageComponent implements OnDestroy {
