@@ -17,7 +17,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 @Component({
   selector: 'app-form-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./form-page.component.scss'],
+  styleUrl: './form-page.component.scss',
   standalone: true,
   template: `
     <h1>Form</h1>
