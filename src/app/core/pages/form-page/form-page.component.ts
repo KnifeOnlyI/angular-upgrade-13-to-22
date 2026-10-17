@@ -22,8 +22,6 @@ import {toSignal} from "@angular/core/rxjs-interop";
   template: `
     <h1>Form</h1>
 
-    <app-dummy></app-dummy>
-
     <hr>
 
     <form (ngSubmit)="onSubmit()">
