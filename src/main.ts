@@ -3,7 +3,7 @@ import {environment} from './environments/environment';
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppRootPageComponent} from "@pages/app-root-page/app-root-page.component";
 import {provideRouter, Routes} from "@angular/router";
-import {provideHttpClient, withFetch} from "@angular/common/http";
+import { provideHttpClient, withFetch } from "@angular/common/http";
 
 if (environment.production) {
   enableProdMode();
