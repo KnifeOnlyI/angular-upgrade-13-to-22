@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CounterComponent} from "@shared/components/counter/counter.component";
 
 @Component({
@@ -7,11 +7,15 @@ import {CounterComponent} from "@shared/components/counter/counter.component";
   imports: [
     CounterComponent
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1>Counter</h1>
-    <app-counter [autoIncrementValue]="10"></app-counter>
+    <app-counter [autoIncrementValue]="10" (counterChanges)="onCounterChanges($event)"></app-counter>
   `
 })
 export class CounterPageComponent {
 
+  protected onCounterChanges(newCounterValue: number) {
+    console.log('New counter value', newCounterValue);
+  }
 }

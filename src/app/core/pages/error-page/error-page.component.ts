@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, signal} from '@angular/core';
 import {DummyComponent} from "@shared/components/dummy/dummy.component";
 
 @Component({
   selector: 'app-error-page',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DummyComponent
   ],
@@ -22,11 +23,25 @@ import {DummyComponent} from "@shared/components/dummy/dummy.component";
       <p>Dummy 3</p> <!-- Not displayed -->
     </app-dummy>
 
-    <app-dummy [displayMessage]="true">
+    <app-dummy [displayMessage]="displayLastDummy()">
       <p>Dummy 4</p> <!-- Not displayed -->
     </app-dummy>
   `
 })
-export class ErrorPageComponent {
+export class ErrorPageComponent implements OnDestroy {
+  private readonly intervalId?: number | NodeJS.Timeout;
 
+  // Obligé de passer à un signal suite au passage à zoneless. Sans signaux, zoneless ne détecte pas les changements
+  // des inputs.
+  protected displayLastDummy = signal(true);
+
+  constructor() {
+    this.intervalId = setInterval(() => {
+      this.displayLastDummy.update(initial => !initial);
+    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
+  }
 }

@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, computed, effect, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+  signal
+} from '@angular/core';
 
 @Component({
   selector: 'app-counter',
@@ -14,8 +24,9 @@ import {ChangeDetectionStrategy, Component, computed, effect, Input, OnDestroy, 
 })
 export class CounterComponent implements OnInit, OnDestroy {
 
-  @Input({required: true})
-  public autoIncrementValue!: number;
+  public autoIncrementValue = input.required<number>();
+
+  public counterChanges = output<number>();
 
   protected readonly counter = signal(0);
   protected readonly counterDouble = computed(() => this.counter() * 2);
@@ -25,13 +36,13 @@ export class CounterComponent implements OnInit, OnDestroy {
     console.log('Counter component created');
 
     effect(() => {
-      console.log('Counter value changed', this.counter());
+      this.counterChanges.emit(this.counter());
     });
   }
 
   ngOnInit() {
     // La valeur des inputs ne sont dispo qu'à partir de ngOnInit
-    this.intervalId = setInterval(() => this.increment(this.autoIncrementValue), 500);
+    this.intervalId = setInterval(() => this.increment(this.autoIncrementValue()), 500);
   }
 
   ngOnDestroy() {

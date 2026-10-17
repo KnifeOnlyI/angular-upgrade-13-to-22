@@ -1,9 +1,9 @@
-import {enableProdMode} from '@angular/core';
+import {enableProdMode, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import {environment} from './environments/environment';
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppRootPageComponent} from "@pages/app-root-page/app-root-page.component";
 import {provideRouter, Routes} from "@angular/router";
-import { provideHttpClient, withFetch } from "@angular/common/http";
+import {provideHttpClient, withFetch} from "@angular/common/http";
 
 if (environment.production) {
   enableProdMode();
@@ -33,6 +33,7 @@ void bootstrapApplication(AppRootPageComponent, {
     provideRouter(routes),
     // On provide HttpClient (obligatoire pour le moment si on fait des requêtes HTTP)
     // Et on demande à ce qu'il utilise fetch au lieu de XHR.
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    provideExperimentalZonelessChangeDetection()
   ]
 });
