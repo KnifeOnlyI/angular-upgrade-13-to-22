@@ -13,6 +13,7 @@ import {RouterLink, RouterOutlet} from "@angular/router";
       <li><a [routerLink]="['']">Index</a></li>
       <li><a [routerLink]="['counter']">Counter</a></li>
       <li><a [routerLink]="['form']">Form</a></li>
+      <li><a [routerLink]="['search-form']">Search Form</a></li>
       <li><a [routerLink]="['error']">Error</a></li>
     </ul>
 

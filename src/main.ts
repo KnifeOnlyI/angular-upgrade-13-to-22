@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('@pages/form-page').then(m => m.routes)
   },
   {
+    path: 'search-form',
+    loadChildren: () => import('@pages/search-form-page').then(m => m.routes)
+  },
+  {
     path: '**',
     loadChildren: () => import('@pages/error-page').then(m => m.routes)
   }
