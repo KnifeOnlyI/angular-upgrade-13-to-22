@@ -8,6 +8,8 @@ export class LineForm extends FormGroup<{
 }> {
   private readonly subscriptions = new Subscription();
 
+  public readonly id = crypto.randomUUID();
+
   constructor() {
     const firstNumber = new FormControl<number | null>(null, {validators: [Validators.required]});
     const secondNumber = new FormControl<number | null>(null, {validators: [Validators.required]});

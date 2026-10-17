@@ -9,13 +9,13 @@ import {
 } from "@angular/forms";
 import {LineForm} from "@shared/forms/line.form";
 import {FormLineService} from "@shared/services/form-line.service";
-import {firstValueFrom} from "rxjs";
-import {JsonPipe, NgForOf} from "@angular/common";
+import {firstValueFrom, map, startWith} from "rxjs";
+import {JsonPipe} from "@angular/common";
 import {DummyComponent} from "@shared/components/dummy/dummy.component";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-form-page',
-  // Si on met "DEFAULT" les logs dans les méthodes (utilisés dans le template) s'exécuteront 2 fois trop.
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./form-page.component.scss'],
   standalone: true,
@@ -29,7 +29,7 @@ import {DummyComponent} from "@shared/components/dummy/dummy.component";
     <form (ngSubmit)="onSubmit()">
       <button (click)="onAddLine()" type="button">Ajouter une ligne</button>
 
-      <ng-container *ngFor="let lineForm of form.controls; let index = index">
+      @for (lineForm of form.controls; track lineForm.id; let index = $index) {
         <div class="form-line">
           <!--
           L'absence de typage nous oblige à créer un getter (méthode) et à l'utiliser dans le template si on veut
@@ -46,35 +46,44 @@ import {DummyComponent} from "@shared/components/dummy/dummy.component";
           <code>{{ lineForm.controls.secondNumber.errors | json }}</code>
           <code>{{ lineForm.controls.thirdNumber.errors | json }}</code>
         </div>
-      </ng-container>
+      }
 
       <button type="submit">Valider</button>
     </form>
 
     <div class="form-results">
-      <div class="form-result">
-        <p>Form values</p>
-        <pre><code>{{ form.getRawValue() | json }}</code></pre>
-      </div>
-
-      <div class="form-result">
-        <p>Form errors</p>
-        <pre><code>{{ form.errors | json }}</code></pre>
-      </div>
+      @if (isFormValid()) {
+        <div class="form-result">
+          <p>Form values</p>
+          <pre><code>{{ form.getRawValue() | json }}</code></pre>
+        </div>
+      } @else {
+        <div class="form-result">
+          <p>Form errors</p>
+          <pre><code>{{ form.errors | json }}</code></pre>
+        </div>
+      }
     </div>
   `,
   imports: [
     ReactiveFormsModule,
     JsonPipe,
     FormsModule,
-    DummyComponent,
-    NgForOf
+    DummyComponent
   ]
 })
 export class FormPageComponent implements OnDestroy {
   private readonly formLineService = inject(FormLineService);
 
   protected readonly form = new FormArray<LineForm>([], {validators: [minFormArrayLength(1)]});
+
+  protected readonly isFormValid = toSignal(
+    this.form.statusChanges.pipe(
+      startWith(this.form.status),
+      map(status => status === 'VALID')
+    ),
+    {requireSync: true}
+  );
 
   ngOnDestroy() {
     this.form.controls.forEach(line => line.destroy());
